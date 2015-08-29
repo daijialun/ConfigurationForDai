@@ -45,6 +45,8 @@ Jekyll是一个简单的博客形态的静态站点生产机器（生成工具�
 
 - _index.html, .html或.md 如果这些文件包含了YAML头文件，Jekyll自动转换。
 
+- 添加额外页面，可将HTML文件放在根目录文件夹下或者在根目录下创建文件夹对每一个页面，放如index.html。差别在于生成的URL。
+
 ### 预先定义的全局变量
 
 - layout 指明使用layout文件，不需要拓展名。layout文件存放在_layouts中
@@ -64,6 +66,10 @@ Jekyll是一个简单的博客形态的静态站点生产机器（生成工具�
 _posts目录是存放post的地方，文件主要是用Makrdown和HTML所转换的。所有posts都有YAML头信息。
 
 - 在_posts目录下新建文件，文件名要求格式：YEAR-MONTH-DAY-title.MARKUP，例如2011-12-31-new-years-eve-is-awesome.md
+
+- 所有post文件都必须以YAML文章开始。
+
+- 可在根目录下创建assets或downloads目录来引用图片或资源。在post中引用站点根目录即可。这与站点的域名、二级域名以及路径有关。例如，在Markdown中，用site.url变量：![My helpful screenshot]({{ site.url }}/assets/screenshot.jpg)
 
 
 ## Problem Solution
@@ -90,3 +96,5 @@ _posts目录是存放post的地方，文件主要是用Makrdown和HTML所转换�
     -- - -
     
 5. 如果是UTF-8编码，加入BOM头文件
+
+6. **使用`jekyll serve`可以在本地服务器上预览网站。** `jekyll serve --drafts`可在本地浏览器上查看草稿编写。
