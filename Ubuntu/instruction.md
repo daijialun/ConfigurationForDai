@@ -6,4 +6,3 @@
             
         find   /tmp   -name "*.h"   -exec grep "SYSCALL_VECTOR"   {}   \; -print
         
-        find   /tmp   -name "*.h"   -exec grep "SYSCALL_VECTOR"   {}   \; -print
