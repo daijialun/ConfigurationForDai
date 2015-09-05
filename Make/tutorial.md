@@ -1,4 +1,4 @@
-#Linux下make指令
+#Linux下makefile
 
 - 参考[跟我一起写 Makefile](http://blog.csdn.net/haoel/article/details/2886/)
 
@@ -19,3 +19,5 @@
 - wildcard被展开为已经存在的、使用空格分开的、匹配此模式的所有文件列表，即搜索文件 
 
 - include 暂停读取当前的 Makefile,而转去读取include指定的一个或者多个文件,完成以后再继续当前 Makefile 的读取。-include忽略文件不存在或者无法创建时的错误，make继续执行
+
+- “$(sources:.c=.d)”中的“.c=.d”的意思是做一个替换，把变量$(sources)所有[.c]的字串都替换成[.d]
