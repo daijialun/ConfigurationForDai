@@ -35,3 +35,25 @@
         Stock joe;
         
     kate.shares占一个内存块，joe.shares占据另一个内存块。kate.show()和joe.show()都调用同一个方法（函数）
+    
+### 构造函数和析构函数
+
+- 构造函数的参数表示的不是类成员，而是赋给类成员的值。因此，参数名不能与类成员相同
+
+        Stock::Stock( const string &company, long shares, double share_val)
+        { ... }
+        
+      改为：
+        
+        Stock::Stock( const string &company, long sm double d)
+        
+- **为了避免以上混乱，一种是在数据成员名中使用m_前缀，m_company；另一种是成员名售后后缀_，company_
+
+- 初始化对象：
+      - 显示 
+      
+            Stock food=Stock("N" ,250,1.5)
+            
+      - 隐式
+      
+            Stock garment("M", 50, 2.5)
