@@ -144,4 +144,15 @@ private: const int M=12; 不行，声明只描述了对象形式，没有创建�
 
 函数重载是用同名函数完成相同的基本操作，甚至这种操作被用于不同的数据类型    
 
+- 运算符函数格式： operator op(argument-list)，如operator+()。不能虚构新的运算符
+
+- district=sid+sara  编译器发现是操作数sara，是类对象，使用相应运算符函数替换上述运算符 district=sid.operator+(sara) ;  隐式使用sid，显式使用sara对象
+
+- **不要返回指向局部变量或者临时对象的引用。**函数执行后，局部变量和临时对象将消失，引用将指向不存的数据。例如：
+
+    Time & Time::Sum(const Time &T) const
+    {Time sum; sum=T;return sum;}由于函数引用sum对象，sum对象为局部变量，函数结束删除，则最终指向不存在对象
     
+    Time & Time::Sum(const Time &T) const
+    {Time sum; sum=T;return sum;} 由于函数有返回对象，将创建对象副本，调用函数可以使用
+        
