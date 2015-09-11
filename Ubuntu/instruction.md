@@ -26,4 +26,15 @@
     - ${file%%.*}: 删除第一个.及其右边的字符：/dir1/dir2/dir3/my
     - \#去掉左边，\%去掉右边（\#, %分别在键盘左右）；单一符号是最小匹配，两个符号是最大匹配
     
+- dirname $0，返回当前路径。在命令行状态下执行，返回“.”
+
+    在/home/admin/test/下新建test.sh，内容：
+    
+    1. cd `dirname $0`
+    2. echo `pwd`
+  
+    在/home/admin/下执行sh test/test.sh，结果为/home/admin/test，即脚本目录，可知道一些和脚本一起部署的文件位置
+
+    
+    
         
