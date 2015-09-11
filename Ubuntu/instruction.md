@@ -34,6 +34,8 @@
     2. echo `pwd`
   
     在/home/admin/下执行sh test/test.sh，结果为/home/admin/test，即脚本目录，可知道一些和脚本一起部署的文件位置
+    
+- /path/to 表示设置为自己所需要的目录路径
 
     
     
