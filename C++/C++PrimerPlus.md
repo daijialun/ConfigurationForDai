@@ -1,4 +1,4 @@
-    # C++ Primer Plus 读书笔记
+# C++ Primer Plus 读书笔记
 
 ## Chapter 10 类和对象
 
@@ -239,5 +239,32 @@ private: const int M=12; 不行，声明只描述了对象形式，没有创建�
     
     **静态成员是整型或枚举型const，则可以在类声明中初始化**
     
+- 构造函数中使用new分配内存时，必须在相应析构函数中使用delete来释放内存。如果使用new[]来分配内存，则应使用delete[]释放内存
     
+- 特殊成员函数：
+    - 默认构造函数（如果没有定义构造函数）
+    - 默认西沟函数（如没定义）
+    - 复制构造函数（如没定义）
+    - 赋值运算符（如没定义）
+    - 地址运算符（如没定义）
     
+- 如果没提供任何构造函数，C++将自动创建默认构造函数（不接受任何参数，也不执行任何操作），为了解决 Klunk lunk; 这类问题； 
+   
+    **默认构造函数：**
+     
+     - 没有参数
+     - 所有参数都有默认值
+    
+    **复制构造函数：**
+    
+     - 用于初始化，而不是常规赋值
+     - 表现为指向对象的引用左右参数，例如StringBad( const String & )
+     - 将新对象显式地初始化现有对象，常使用赋值构造函数，例如：
+        - String ditto(motto);
+        - String metoo=motto;
+        - String also=String(motto);
+        - String *pStringBad=new String(motto);
+     - **按值传递和返回对象，都将调用复制构造函数**
+     - 默认赋值函数，只是直接复制成员变量值，即只复制指针地址，并不复制指针内容；通过显式复制构造函数，StringBad::StringBad(const StringBad &st) {str=new char[len+1]; strcpy(str, st.str);}则复制指针内容，如果之前对象删除，也不会影响
+     
+     
