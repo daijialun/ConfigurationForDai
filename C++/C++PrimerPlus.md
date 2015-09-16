@@ -266,5 +266,32 @@ private: const int M=12; 不行，声明只描述了对象形式，没有创建�
         - String *pStringBad=new String(motto);
      - **按值传递和返回对象，都将调用复制构造函数**
      - 默认赋值函数，只是直接复制成员变量值，即只复制指针地址，并不复制指针内容；通过显式复制构造函数，StringBad::StringBad(const StringBad &st) {str=new char[len+1]; strcpy(str, st.str);}则复制指针内容，如果之前对象删除，也不会影响
-     
-     
+   
+### 改进的String类
+
+- C++11，nullptr空指针，即str=nullptr  
+
+- 中括号运算符[]，可通过operator[]()来重载该运算符，一个操作数位于[之前，另一个操作数位于[]之间。例如，city[0]中，city是第一个操作数，[]是运算符，0是第二个操作数
+
+- String::show() const表示成员函数show()不改变成员变量；const String answer("fut")表示常量对象
+
+- **静态类成员函数**，可用类名和作用域解析运算符来调用。例如， static int HowMany(){return num;}，则调用方式为int count=String::HowMany();
+
+    使用静态类成员函数，注意：
+    
+    - 不能通过对象调用静态成员函数，不能使用this指针（其为公共部分）
+    - 只能使用静态数据成员，如num_thing，不能使用str与len
+    
+### 构造函数使用new注意
+
+- 构造函数使用new初始化指针成员，则在析构中使用delete
+
+- new []对应于delete []
+
+- 如果有多个构造函数，必须以相同的方式使用new，都带中括号，或者都不带。因为只有一个析构函数，所有构造函数必须与其兼容
+
+- 应定义一个复制构造函数，通过深度复制将一个对象初始化为另一个对象。String::String( const String &st) { str=new char[len+1];strcpy(str, st.str);}。即复制构造函数应复制数据，而不仅仅是数据地址。
+
+- 应定义一个复制运算符，深度复制一个对象给另一个对象。功能：检查自我赋值，释放成员以前指针，复制数据非地址，并返回指向调用对象的引用。
+
+### 返回对象
