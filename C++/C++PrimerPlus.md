@@ -295,3 +295,36 @@ private: const int M=12; 不行，声明只描述了对象形式，没有创建�
 - 应定义一个复制运算符，深度复制一个对象给另一个对象。功能：检查自我赋值，释放成员以前指针，复制数据非地址，并返回指向调用对象的引用。
 
 ### 返回对象
+
+- 如果函数要返回局部对象，应返回对象，不能是指向对象的引用。这种情况，将使用复制构造函数来生成返回的对象。
+
+- 函数返回一个没有公有复制构造函数的类（如ostream类）的对象，必须返回一个指向这种对象的引用。
+
+- 有些函数（如重载运算符）可以返回对象，也可以返回指向对象的引用。这种情况，**首先使用引用**，效率更高。
+
+### 指向对象的指针
+
+使用new初始化对象：
+
+- Class_name *pclass=new Class_name(value)，其中Class_name是类，value类型为Type_name；随后使用构造函数Class_name(Type_name);
+
+- 默认构造函数，则Class_name *ptr=new
+ Class_name；
+ 
+- 例如， String *favorite=new String(test);
+
+- Act *pt=new Act; delete pr; 对pt使用delete运算符时，将调用动态对象pt的析构函数
+
+- delete只释放对象占用空间，对于成员变量所指向的内存，使用析构函数完成
+
+- 如果对象是动态变量（普通成员变量，非静态），new，则当执行玩定义该对象的程序块时，将调用该对象的析构函数
+
+- **对象是用new创建的，则必须显式使用delete删除对象时，析构函数才会被调用。**
+
+- 指针和对象：
+    
+      - 常规表示对象指针 String *glamour
+      - 对象初始化指针 String *first=& saying[0];
+      - 使用new初始化指针，创建新对象 String *favorite=new String(saying[choice])
+      - 调用构造函数，初始化新对象 String *gleep=new String；String *glop=new String("my")
+
