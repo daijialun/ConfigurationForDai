@@ -328,3 +328,10 @@ private: const int M=12; 不行，声明只描述了对象形式，没有创建�
       - 使用new初始化指针，创建新对象 String *favorite=new String(saying[choice])
       - 调用构造函数，初始化新对象 String *gleep=new String；String *glop=new String("my")
 
+- 定位new运算符：
+
+     - delete可与常规new运算符配合使用，不能与定位new运算符配合使用
+     
+     - 显式使用定位new运算符创建的对象调用析构函数 pc3->～JustTesting()；
+     
+     - 使用定位new运算符创建的独享，应与创建顺序相反
