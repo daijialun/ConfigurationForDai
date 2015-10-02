@@ -640,4 +640,187 @@ private: const int M=12; 不行，声明只描述了对象形式，没有创建�
                         
 - using声明知识用成员名，没有圆括号、函数特征标和返回类型。**using只适用于继承，而不适用于包含。**
 
+### 多重继承
+
+- 多重继承MI( multiple inheritance)，描述有多个直接的基类的类，表示的是is-a关系。                  
+
+- 编译器默认派生为private
+
+- **虚基类：**虚基类使得从多个类（其基类相同）派生出的对象只继承一个基类对象，在类声明中使用关键字virtual（virtual与public顺序无关紧要）
+
+            class Singer: virtual public Worker {};
+            class Waiter: public virtual Worker{};
+            class SingingWaiter: public Singer, public Waiter {..};
+            
+    现在SingingWaiter对象将只包含Worker基类对象的一个副本，即继承对象Singer和Waiter对象共享一个Worker对象，而不是各自引入自己的Worker对象副本，即多态
+    
+- 虚基类的构造函数规则：**显式地调用所需的基类构造函数，**不能通过中间类自动传递给基类
+
+            SingingWaiter(const Worker &wk, int p=0, int v=Sing::other):Worker(wk), Waiter(wk, p), Singer(wk, v) {}
+            
+    上述代码将显式调用构造函数，**对于虚基类，必须这样做**
+    
+- 多重继承的对象使用函数：一种办法是使用模块化方式，对不同对象使用不同模块化管理，最后进行模块的组装；另一种方法是将所有数据组件都设置为保护的，而不是私有的，使用保护函数更严格地控制对数据的访问
+
+- **在祖先相同时，使用MI必须引入虚基类，并修改构造函数初始化列表的规则**
+
+- 使用虚基类：从虚基类的一个或多个实例派生而来的类将只继承一个基类对下个，满足：
+
+    - 有间接虚基类的派生类包含直接调用间接基类构造函数的构造函数，对于间接非虚基类是非法的
+    - 通过优先规则解决名称二义性
+    
+### 类模板
+
+- 容器类，设计用来存储其他对象或数据类型；模板提供参数化类型，即能够将类型名作为参数传递给接收方建立类或函数
+
+- 定义类模板：采用模板时，将使用模板定义声明
+
+            template <class Type>
+
+    使用模板成员函数
+    
+            template <class Type>
+            bool Stack<Type>::push(const Type &item){...}
+            
+- 模板的具体实现——实例化或具体化
+
+- 由于模板不是函数，不能单独编译，模板必须与特定的模板实例化请求一起使用。**将所有模板信息放在一个头文件中，并在要使用这些模板的文件中包含该头文件。**
+
+- 泛型标识符（Type），称为类型参数，意味着其类似于变量，但赋给其的不能是数字，只能是类型
+
+- 将类模板实例化为具体类型，则形成模板类
+
+- 对于模板成员函数的返回类型为泛型Type时：在类中的模板声明或者模板函数定义可使用Stack
+
+            Stack & operator=(const Stack<Type> & st)
+   
+   在类外面，即指定返回类型或使用作用域解析运算符时，必须使用完整的Stack<Type>
+   
+            Stack<Type> & Stack<Type>::operator=( const Stack<Type> & st)
+            
+- **指定数组大小的简单数组模板：**一种方法是在类中使用动态数组和构造函数来提供元素数目；另一种方法是使用模板参数来提供常规数组的大小
+
+- **非类型参数或表达式参数：**
+
+            template <class T, int n>
+            
+     表达式参数可以是整型，枚举，引用或指针。模板代码不能修改参数的值，也不能使用参数的地址
+     
+        - 表达式参数使用的是自动变量维护的内存栈，执行速度更快
+        - 表达式参数方法缺点是，每种数组大小都将生成自己的模板，以下语句将生成两种类声明
         
+                ArrayTP<double, 12> eggweights;
+                ArrayTP<double, 13> donuts;
+                
+- 模板的多功能性：
+
+    - 用作基类
+    
+               template <typename T>
+               class Array
+               {    T entry;
+               }
+            
+    - 用作继承
+    
+                template <typename Type>
+                class GrowArray: public Array<Type>
+                
+     - 用作组件类
+     
+                template <typename Tp>
+                class Stack
+                {       Array<Tp> ar;
+                };
+                
+      - 用作其他模板的类型
+      
+                Array< Stack<int> > asi;
+                
+- **递归使用模板：**
+
+            ArrayTP< ArrayTP<int, 5> 10> twodee;
+            
+- **使用多个类型参数：**模板可包含多个类型参数
+
+            template <class T1, class T2>
+            
+- **默认类型模板参数：**可以为类型参数提供默认值
+
+            template <class T1, class T2 = int > 
+            clsaa Topo
+            {
+            };
+            
+### 模板的具体化
+
+- **隐式实例化：**声明一个或多个对象，指出所需的类型
+
+            Array<int, 100> stuff;
+            
+- **显式实例化：**使用关键字template并支出所需类型来声明类时，编译器将使用显式实例化。声明必须位于模板定义所在的名称空间中
+
+            template class ArrayTP<string, 100>;
+            
+    虽然没有创建或提及类对象，但是编译器生成类声明
+    
+- **显示具体化：**定义特定类型（用于替换模板中的泛型）。例如int排序与char *排序方式不同，需要特定方法来比较。当具体化模板和通用模板都与实例化请求匹配时，则使用**具体化**版本
+
+            template <> 
+            class SortedArray< const  char *>{ };
+            
+            SortedArray<int> scores;        //使用通用模板定义
+            SortedArray<const char*>     //使用具体化定义
+            
+- **部分具体化：**部分限制模板的通用性。部分具体化可给类型参数之一指定具体的类型：
+
+            template <class T1, class T2> 
+            class Pair {...};     //通用模板
+            
+            template <class T1> 
+            class Pair <T1, int> {...};    //将T2设置为int具体化
+            
+     也可以通过为指针提供特殊版本，部分具体化现有的模板：
+     
+            template<class T>       
+            class Feeb {};          //通用版本
+            
+            template<class T*>
+            class  Feeb {};         //部分具体化
+            
+- **成员模板：**模板可用作结构、类或模板类的成员。
+
+- **模板用作参数：**模板包含本身就是模板的参数。
+
+            template <template <typename T> class Thing>
+            class Crab
+            
+   其中Thing为参数；假设有声明：Crab<King> legs; 则King必须是模板类，与模板参数Thing对应
+   
+           template <typename T>
+           class King
+           
+- **模板类和友元：**
+
+    - 非模板友元
+    
+            template <class T>
+            class HasFriend
+            {
+                friend void report (HasFriend<T> &);
+            }
+            
+    - 约束模板友元，即友元的类型取决于类被实例化的类型
+    - 非约束模板类
+    
+  
+## Chapter15 友元，异常和其他
+
+### 友元
+
+- 类并不只是能拥有友元函数，也可以将类作为友元。**友元类，**所有函数都可以访问原始类的私有成员和保护成员。
+
+            friend class Remote
+            
+   友元声明可以位于公有，私有或保护部分，所在位置无关紧要。
+- 
